@@ -47,11 +47,11 @@ _T = TypeVar("_T")
 
 
 def __dataclass_transform__(
-    *,
-    eq_default: bool = True,
-    order_default: bool = False,
-    kw_only_default: bool = False,
-    field_descriptors: Tuple[Union[type, Callable[..., Any]], ...] = (()),
+        *,
+        eq_default: bool = True,
+        order_default: bool = False,
+        kw_only_default: bool = False,
+        field_descriptors: Tuple[Union[type, Callable[..., Any]], ...] = (()),
 ) -> Callable[[_T], _T]:
     return lambda a: a
 
@@ -90,13 +90,13 @@ class FieldInfo(PydanticFieldInfo):
 
 class RelationshipInfo(Representation):
     def __init__(
-        self,
-        *,
-        back_populates: Optional[str] = None,
-        link_model: Optional[Any] = None,
-        sa_relationship: Optional[RelationshipProperty] = None,  # type: ignore
-        sa_relationship_args: Optional[Sequence[Any]] = None,
-        sa_relationship_kwargs: Optional[Mapping[str, Any]] = None,
+            self,
+            *,
+            back_populates: Optional[str] = None,
+            link_model: Optional[Any] = None,
+            sa_relationship: Optional[RelationshipProperty] = None,  # type: ignore
+            sa_relationship_args: Optional[Sequence[Any]] = None,
+            sa_relationship_kwargs: Optional[Mapping[str, Any]] = None,
     ) -> None:
         if sa_relationship is not None:
             if sa_relationship_args is not None:
@@ -117,39 +117,44 @@ class RelationshipInfo(Representation):
 
 
 def Field(
-    default: Any = Undefined,
-    *,
-    default_factory: Optional[NoArgAnyCallable] = None,
-    alias: Optional[str] = None,
-    title: Optional[str] = None,
-    description: Optional[str] = None,
-    exclude: Union[
-        AbstractSet[Union[int, str]], Mapping[Union[int, str], Any], Any
-    ] = None,
-    include: Union[
-        AbstractSet[Union[int, str]], Mapping[Union[int, str], Any], Any
-    ] = None,
-    const: Optional[bool] = None,
-    gt: Optional[float] = None,
-    ge: Optional[float] = None,
-    lt: Optional[float] = None,
-    le: Optional[float] = None,
-    multiple_of: Optional[float] = None,
-    min_items: Optional[int] = None,
-    max_items: Optional[int] = None,
-    min_length: Optional[int] = None,
-    max_length: Optional[int] = None,
-    allow_mutation: bool = True,
-    regex: Optional[str] = None,
-    primary_key: bool = False,
-    foreign_key: Optional[Any] = None,
-    unique: bool = False,
-    nullable: Union[bool, UndefinedType] = Undefined,
-    index: Union[bool, UndefinedType] = Undefined,
-    sa_column: Union[Column, UndefinedType] = Undefined,  # type: ignore
-    sa_column_args: Union[Sequence[Any], UndefinedType] = Undefined,
-    sa_column_kwargs: Union[Mapping[str, Any], UndefinedType] = Undefined,
-    schema_extra: Optional[Dict[str, Any]] = None,
+        default: Any = Undefined,
+        *,
+        default_factory: Optional[NoArgAnyCallable] = None,
+        alias: Optional[str] = None,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        exclude: Union[
+            AbstractSet[Union[int, str]], Mapping[Union[int, str], Any], Any
+        ] = None,
+        include: Union[
+            AbstractSet[Union[int, str]], Mapping[Union[int, str], Any], Any
+        ] = None,
+        const: Optional[bool] = None,
+        gt: Optional[float] = None,
+        ge: Optional[float] = None,
+        lt: Optional[float] = None,
+        le: Optional[float] = None,
+        multiple_of: Optional[float] = None,
+        max_digits: Optional[int] = None,
+        decimal_places: Optional[int] = None,
+        min_items: Optional[int] = None,
+        max_items: Optional[int] = None,
+        unique_items: Optional[bool] = None,
+        min_length: Optional[int] = None,
+        max_length: Optional[int] = None,
+        allow_mutation: bool = True,
+        regex: Optional[str] = None,
+        discriminator: Optional[str] = None,
+        repr: bool = True,
+        primary_key: bool = False,
+        foreign_key: Optional[Any] = None,
+        unique: bool = False,
+        nullable: Union[bool, UndefinedType] = Undefined,
+        index: Union[bool, UndefinedType] = Undefined,
+        sa_column: Union[Column, UndefinedType] = Undefined,  # type: ignore
+        sa_column_args: Union[Sequence[Any], UndefinedType] = Undefined,
+        sa_column_kwargs: Union[Mapping[str, Any], UndefinedType] = Undefined,
+        schema_extra: Optional[Dict[str, Any]] = None,
 ) -> Any:
     current_schema_extra = schema_extra or {}
     field_info = FieldInfo(
@@ -166,12 +171,17 @@ def Field(
         lt=lt,
         le=le,
         multiple_of=multiple_of,
+        max_digits=max_digits,
+        decimal_places=decimal_places,
         min_items=min_items,
         max_items=max_items,
+        unique_items=unique_items,
         min_length=min_length,
         max_length=max_length,
         allow_mutation=allow_mutation,
         regex=regex,
+        discriminator=discriminator,
+        repr=repr,
         primary_key=primary_key,
         foreign_key=foreign_key,
         unique=unique,
@@ -187,12 +197,12 @@ def Field(
 
 
 def Relationship(
-    *,
-    back_populates: Optional[str] = None,
-    link_model: Optional[Any] = None,
-    sa_relationship: Optional[RelationshipProperty] = None,  # type: ignore
-    sa_relationship_args: Optional[Sequence[Any]] = None,
-    sa_relationship_kwargs: Optional[Mapping[str, Any]] = None,
+        *,
+        back_populates: Optional[str] = None,
+        link_model: Optional[Any] = None,
+        sa_relationship: Optional[RelationshipProperty] = None,  # type: ignore
+        sa_relationship_args: Optional[Sequence[Any]] = None,
+        sa_relationship_kwargs: Optional[Mapping[str, Any]] = None,
 ) -> Any:
     relationship_info = RelationshipInfo(
         back_populates=back_populates,
@@ -225,11 +235,11 @@ class SQLModelMetaclass(ModelMetaclass, DeclarativeMeta):
 
     # From Pydantic
     def __new__(
-        cls,
-        name: str,
-        bases: Tuple[Type[Any], ...],
-        class_dict: Dict[str, Any],
-        **kwargs: Any,
+            cls,
+            name: str,
+            bases: Tuple[Type[Any], ...],
+            class_dict: Dict[str, Any],
+            **kwargs: Any,
     ) -> Any:
         relationships: Dict[str, RelationshipInfo] = {}
         dict_for_pydantic = {}
@@ -261,7 +271,7 @@ class SQLModelMetaclass(ModelMetaclass, DeclarativeMeta):
             key
             for key in dir(BaseConfig)
             if not (
-                key.startswith("__") and key.endswith("__")
+                    key.startswith("__") and key.endswith("__")
             )  # skip dunder methods and attributes
         }
         pydantic_kwargs = kwargs.copy()
@@ -311,7 +321,7 @@ class SQLModelMetaclass(ModelMetaclass, DeclarativeMeta):
 
     # Override SQLAlchemy, allow both SQLAlchemy and plain Pydantic models
     def __init__(
-        cls, classname: str, bases: Tuple[type, ...], dict_: Dict[str, Any], **kw: Any
+            cls, classname: str, bases: Tuple[type, ...], dict_: Dict[str, Any], **kw: Any
     ) -> None:
         # Only one of the base classes (or the current one) should be a table model
         # this allows FastAPI cloning a SQLModel for the response_model without
@@ -500,8 +510,8 @@ class SQLModel(BaseModel, metaclass=SQLModelMetaclass, registry=default_registry
         )
         # Only raise errors if not a SQLModel model
         if (
-            not getattr(__pydantic_self__.__config__, "table", False)
-            and validation_error
+                not getattr(__pydantic_self__.__config__, "table", False)
+                and validation_error
         ):
             raise validation_error
         # Do not set values as in Pydantic, pass them through setattr, so SQLAlchemy
@@ -530,7 +540,7 @@ class SQLModel(BaseModel, metaclass=SQLModelMetaclass, registry=default_registry
 
     @classmethod
     def from_orm(
-        cls: Type[_TSQLModel], obj: Any, update: Optional[Dict[str, Any]] = None
+            cls: Type[_TSQLModel], obj: Any, update: Optional[Dict[str, Any]] = None
     ) -> _TSQLModel:
         # Duplicated from Pydantic
         if not cls.__config__.orm_mode:
@@ -565,7 +575,7 @@ class SQLModel(BaseModel, metaclass=SQLModelMetaclass, registry=default_registry
 
     @classmethod
     def parse_obj(
-        cls: Type[_TSQLModel], obj: Any, update: Optional[Dict[str, Any]] = None
+            cls: Type[_TSQLModel], obj: Any, update: Optional[Dict[str, Any]] = None
     ) -> _TSQLModel:
         obj = cls._enforce_dict_if_root(obj)
         # SQLModel, support update dict
@@ -576,7 +586,11 @@ class SQLModel(BaseModel, metaclass=SQLModelMetaclass, registry=default_registry
 
     def __repr_args__(self) -> Sequence[Tuple[Optional[str], Any]]:
         # Don't show SQLAlchemy private attributes
-        return [(k, v) for k, v in self.__dict__.items() if not k.startswith("_sa_")]
+        return [
+            (k, v)
+            for k, v in super().__repr_args__()
+            if not (isinstance(k, str) and k.startswith("_sa_"))
+        ]
 
     # From Pydantic, override to enforce validation with dict
     @classmethod
@@ -606,11 +620,11 @@ class SQLModel(BaseModel, metaclass=SQLModelMetaclass, registry=default_registry
 
     # From Pydantic, override to only show keys from fields, omit SQLAlchemy attributes
     def _calculate_keys(
-        self,
-        include: Optional[Mapping[Union[int, str], Any]],
-        exclude: Optional[Mapping[Union[int, str], Any]],
-        exclude_unset: bool,
-        update: Optional[Dict[str, Any]] = None,
+            self,
+            include: Optional[Mapping[Union[int, str], Any]],
+            exclude: Optional[Mapping[Union[int, str], Any]],
+            exclude_unset: bool,
+            update: Optional[Dict[str, Any]] = None,
     ) -> Optional[AbstractSet[str]]:
         if include is None and exclude is None and not exclude_unset:
             # Original in Pydantic:
@@ -650,6 +664,6 @@ def _is_field_noneable(field: ModelField) -> bool:
     if not field.required:
         # Taken from [Pydantic](https://github.com/samuelcolvin/pydantic/blob/v1.8.2/pydantic/fields.py#L946-L947)
         return field.allow_none and (
-            field.shape != SHAPE_SINGLETON or not field.sub_fields
+                field.shape != SHAPE_SINGLETON or not field.sub_fields
         )
     return False
