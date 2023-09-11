@@ -559,6 +559,7 @@ class SQLModel(BaseModel, metaclass=SQLModelMetaclass, registry=default_registry
             # If table, create the new instance normally to make SQLAlchemy create
             # the _sa_instance_state attribute
             m = cls()
+            
         if validate:
             values, fields_set, validation_error = validate_model(cls, obj)
             if validation_error:
